@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 
 
-public class LoginTest {
-    WebDriver driver = new ChromeDriver();
-    HomePage home = new HomePage(driver);
-    LoginPage loginPage = new LoginPage(driver);
+public class LoginTest extends BaseTest  {
+    WebDriver driver;
+    HomePage home;
+    LoginPage loginPage;
     @Test
     public void ValidLogin() {
 
