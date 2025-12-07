@@ -58,11 +58,11 @@ public class HomePage {
         }
         By jewelry = By.xpath("/html/body/div[4]/div[1]/div[2]/ul[1]/li[6]/a");
         By drop = By.xpath("//*[@id=\"products-orderby\"]");
-        By filter = By.xpath("//*[@id=\"products-orderby\"]/option[4]");
+        By sort = By.xpath("//*[@id=\"products-orderby\"]/option[4]");
         public void sort(){
             driver.findElement(jewelry).click();
             driver.findElement(drop).click();
-            driver.findElement(filter).click();
+            driver.findElement(sort).click();
         }
 
         By actualPrice = By.className("actual-price");
@@ -95,11 +95,11 @@ public class HomePage {
             }
             return validPrices;
         }
-
-    public void filter(){
+    By filter = By.xpath("/html/body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[2]/div/div[2]/ul/li[1]/a");
+    public boolean filter(){
+        driver.findElement(jewelry).click();
+        driver.findElement(filter).click();
         List<WebElement> productsPrices = driver.findElements(actualPrice);
-        driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[2]/div/div[2]/ul/li[1]/a")).click();
-            productsPrices = driver.findElements(By.className("actual-price"));
             boolean check= true ;
             for (int i=0; i< productsPrices.size();i++){
                 if((Float.parseFloat(productsPrices.get(i).getText())>500)|| (Float.parseFloat(productsPrices.get(i).getText())<0)){
@@ -109,7 +109,7 @@ public class HomePage {
                 }
 
             }
-            System.out.println(check);
+            return check;
         }
 
 
