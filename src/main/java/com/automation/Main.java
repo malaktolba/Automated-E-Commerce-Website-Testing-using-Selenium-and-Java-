@@ -23,38 +23,51 @@ public class Main {
         driver.manage().window().maximize();
 
         driver.get("https://demowebshop.tricentis.com");
-        driver.findElement(By.xpath("//*[@id=\"small-searchterms\"]")).sendKeys("gift card");
-        driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[1]/div[3]/form/input[2]")).click();
-        List<WebElement> productNames = driver.findElements(By.className("product-title"));
-        boolean valid = true;
-        for (int i=0; i< productNames.size();i++) {
-            System.out.println(productNames.get(i).getText());
-            if(!productNames.get(i).getText().toLowerCase().contains("gift card")){
-                valid=false;
-                break;
-            }
-        }
-        System.out.println(valid);
-        Thread.sleep(3000);
+
         driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[2]/ul[1]/li[6]/a")).click();
         driver.findElement(By.xpath("//*[@id=\"products-orderby\"]")).click();
         driver.findElement(By.xpath("//*[@id=\"products-orderby\"]/option[4]")).click();
         List<WebElement> productsPrices = driver.findElements(By.className("actual-price"));
-        System.out.println(productsPrices.getFirst().getText());
+        System.out.println(productsPrices.get(0).getText());
         boolean validPrices  = true;
+        float previousPrice = 0;
         for (int i=0; i< productsPrices.size();i++) {
-            System.out.println(productsPrices.get(i).getText().split(" ")[0]);
+
             if(Arrays.stream(productsPrices.get(i).getText().split(" ")).count()>1){
-                System.out.println(productsPrices.get(i).getText().split(" ")[1]);
+                if(previousPrice>Float.parseFloat(productsPrices.get(i).getText().split(" ")[1])){
+                    validPrices=false;
+                    break;
+                }
+                else{
+                    previousPrice=Float.parseFloat(productsPrices.get(i).getText().split(" ")[1]);
+                }
 
             }
+            else{
+                if(previousPrice>Float.parseFloat(productsPrices.get(i).getText().split(" ")[0])){
+                    validPrices=false;
+                    break;
+                }
+                else{
+                    previousPrice=Float.parseFloat(productsPrices.get(i).getText().split(" ")[0]);
+                }
+            }
+
         }
+        System.out.println(validPrices);
 
 
+        driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[2]/div/div[2]/ul/li[1]/a")).click();
+        productsPrices = driver.findElements(By.className("actual-price"));
+        boolean check= true ;
+        for (int i=0; i< productsPrices.size();i++){
+            if((Float.parseFloat(productsPrices.get(i).getText())>500)|| (Float.parseFloat(productsPrices.get(i).getText())<0)){
+                check=false ;
+                break ;
 
-        driver.findElement(By.xpath("/html/body/div[4]/div[1]/div[4]/div[2]/div[2]/div[2]/div[2]/div/div[2]/ul/li[2]/a/span[1]")).click();
+            }
 
-
-
+        }
+        System.out.println(check);
     }
 }
